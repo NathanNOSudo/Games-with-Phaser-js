@@ -17,6 +17,15 @@ function create ()
     shape.on('pointerup', function() { 
       this.fillColor = gameState.selectedColor;
     });
+    // Add 'pointerover' and 'pointerout' 
+    // handlers here
+    shape.on('pointerover', function() {
+      this.setBlendMode(Phaser.BlendModes.SCREEN);
+    })
+    shape.on('pointerout', function() {
+      this.setBlendMode(Phaser.BlendModes.NORMAL)
+    })
+  
   }
 
   // Setting up palette circles

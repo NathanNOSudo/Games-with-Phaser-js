@@ -13,19 +13,10 @@ function create ()
     shape.isStroked = true;
     shape.setOrigin(0, 1);
     shape.lineWidth = 2
-    shape.setInteractive();
-    shape.on('pointerup', function() { 
-      this.fillColor = gameState.selectedColor;
-    });
-    // Add 'pointerover' and 'pointerout' 
-    // handlers here
-    shape.on('pointerover', function() {
-      this.setBlendMode(Phaser.BlendModes.SCREEN);
-    })
-    shape.on('pointerout', function() {
-      this.setBlendMode(Phaser.BlendModes.NORMAL)
-    })
-  
+    shape.setInteractive()
+    shape.on('pointerdown', function() { this.fillColor = gameState.selectedColor })
+    shape.on('pointerover', function() { this.strokeColor = 0xffffff; this.setBlendMode(Phaser.BlendModes.SCREEN)})
+    shape.on('pointerout', function() { this.strokeColor = 0x000000; this.setBlendMode(Phaser.BlendModes.NORMAL)})
   }
 
   // Setting up palette circles
@@ -43,16 +34,28 @@ function create ()
     paletteCircle.strokeColor = 0x000000;
     paletteCircle.isStroked = true;
     paletteCircle.lineWidth = 2;
-
-    /* add a click handler for each palette circle here */
     paletteCircle.setInteractive();
-    paletteCircle.on('pointerup', function() {
-      gameState.selectedColor = this.color;
-    }, { color })
 
+    paletteCircle.on('pointerdown', function() {
+      gameState.selectedColor = this.color; 
+    }, { color });
 
+    paletteCircle.on('pointerover', function() {
+      this.strokeColor = 0xffffff; 
+    });
+
+    paletteCircle.on('pointerout', function() { 
+      this.paletteCircle.strokeColor = 0x000000;
+      if (gameState.selectedColor === this.color) {
+        for (let circle of gameState.paletteCircles) {
+          circle.strokeColor = 0x000000;
+        }
+        this.paletteCircle.strokeColor = 0xffc836; 
+      }
+    }, { paletteCircle, color })
+
+    gameState.paletteCircles.push(paletteCircle);
   }
-
 }
 
 function getPegasusShapes(scene) {
@@ -521,5 +524,4 @@ function nostril(scene) {
   path.closePath();
   return scene.add.curve(346.6899414, 125.6815302, path, 0x000000);
 }
-
 

@@ -525,3 +525,8 @@ function nostril(scene) {
   return scene.add.curve(346.6899414, 125.6815302, path, 0x000000);
 }
 
+//Add Music 
+//Add more Colors
+//Change backgroud 
+//Add Animations
+//Put pallete on the side
